@@ -1,0 +1,54 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <meta http-equiv="X-UA-Compatible" content="ie=edge" />
+    <title>Static Template</title>
+  </head>
+  <body>
+    <ul id="demo">
+      <h2>list</h2>
+    </ul>
+
+    <script>
+      async function get(url) {
+        const response = await fetch(url);
+        const resData = await response.json();
+        return resData;
+      }
+
+      const post = async (url, data) => {
+        let response = await fetch(url, {
+          method: "POST",
+          headers: { "content-type": "application/json" },
+          body: JSON.stringify(data)
+        });
+        let resData = await response.json();
+        return resData;
+      };
+
+      get("https://jsonplaceholder.typicode.com/todos")
+        .then((res) => {
+          let list = res;
+          console.log("list", list);
+          let demo = document.getElementById("demo");
+          list.map((i) => (demo.innerHTML += `<li>${i.title}</li>`));
+        })
+        .catch((err) => console.log(err));
+
+      let data = {
+        userId: 1,
+        id: 1,
+        title: "delectus aut autem",
+        completed: false
+      };
+
+      post("https://jsonplaceholder.typicode.com/todos", data)
+        .then((res) => {
+          console.log(res);
+        })
+        .catch((err) => console.log(err));
+    </script>
+  </body>
+</html>
